@@ -7,10 +7,10 @@ var app = new Vue({
         token:'',
         products: [],
         pages:[], // 頁數資訊
-        cloneDate: {
-            imageUrl: [],
-        },
-        editproductName: '新增產品',
+        editpid: '',
+        // cloneDate: {
+        //     imageUrl: [],
+        // },
     },
 
     methods: {
@@ -54,7 +54,7 @@ var app = new Vue({
 
         // 開啟工作面板
         DoEditProduct(editType, product) {
-            console.log(`******** all.js(editproduct) editType= ${editType} ******`);
+            console.log(`******** all.js(editproduct) 開啟工作面板 editType= ${editType} ******`);
 
             switch (editType) {
                 case 'new': // 新增模式
@@ -65,17 +65,14 @@ var app = new Vue({
                     };
                     this.cloneDate.id = new Date().getTime();
                     break;
+                    
                 case 'edit': //修改模式
                     // $('#editproduct').modal('show');
-                    // this.cloneDate = JSON.parse(JSON.stringify(product)); ??????????????
-                    this.editproductName = '修改產品';
-                    console.log(`修改模式.id = ${this.cloneDate.id} `)
-
-                    this.$refs.editproduct.GetProductForEditProduct(this.product.id);
-                    
-
-
+                    this.editpid = product.id;
+                    console.log(`******** all.js(editproduct) 開啟工作面板 editpid= ${ this.editpid } ******`);
+                    this.$refs.editproduct.dorefresh();
                     break;
+
                 case 'delete': //刪除模式
                     $('#deletePanel').modal('show');
                     this.cloneDate = JSON.parse(JSON.stringify(product));
