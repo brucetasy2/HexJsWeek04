@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 外部引用 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+  <title>HexJsWeek04</title>
+</head>
+
+<body>
+  <div id="app" class="container mt-3">
+    <div>
+      <div class="text-right mt-4">
+        <button class="btn btn-primary" @click="doEditProduct('new')">
+          建立新的產品
+        </button>
+      </div>
+
+      <!-- 01 顯示資料明細 -->
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th width="120">分類</th>
+            <th>產品名稱</th>
+            <th width="120">原價</th>
+            <th width="120">售價</th>
+            <th width="100">是否啟用</th>
+            <th width="120">編輯</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(product) in products">
+            <td>{{product.category}}</td>
+            <td>{{product.title}}</td>
+            <td class="text-right">{{product.origin_price}}</td>
+            <td class="text-right">{{product.price}}</td>
+            <td>
+              <span v-if="product.is_enabled" class="text-success">販售中</span>
+              <span v-else>禁販售</span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button class="btn btn-outline-primary btn-sm" @click="DoEditProduct('edit',product)">
+                  編輯
+                </button>
+                <button class="btn btn-outline-danger btn-sm" @click="DoEditProduct('delete',product)">
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 02 新增或編輯 產品 -->
+      <!-- <div id="editPanel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        class="modal fade">
+        <div role="document" class="modal-dialog modal-xl">
+          <div class="modal-content border-0">
+            
+            <div class="modal-header bg-dark text-white">
+              <h5 id="exampleModalLabel" class="modal-title">
+                <span>{{editPanelName}}</span>
+              </h5>
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="imageUrl">輸入圖片網址[imageUrl]</label>
+                    <input id="imageUrl" type="text" placeholder="請輸入圖片連結" class="form-control"
+                      v-model="cloneDate.imageUrl" />
+                  </div>
+                  <img :src="cloneDate.imageUrl" alt="PIC" class="img-fluid" />
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="form-group">
+                    <label for="title">標題[title]</label>
+                    <input id="title" type="text" placeholder="請輸入標題" class="form-control" v-model="cloneDate.title" />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="category">分類[category]</label>
+                      <input id="category" type="text" placeholder="請輸入分類" class="form-control"
+                        v-model="cloneDate.category" />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="price">單位[unit]</label>
+                      <input id="unit" type="unit" placeholder="請輸入單位" class="form-control" v-model="cloneDate.unit" />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="origin_price">原價[origin_price]</label>
+                      <input id="origin_price" type="number" placeholder="請輸入原價" class="form-control"
+                        v-model="cloneDate.origin_price" />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="price">售價[price]</label>
+                      <input id="price" type="number" placeholder="請輸入售價" class="form-control"
+                        v-model="cloneDate.price" />
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="form-group">
+                    <label for="description">產品描述[description]</label>
+                    <textarea id="description" type="text" placeholder="請輸入產品描述" class="form-control"
+                      v-model="cloneDate.description"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="content">說明內容[content]</label>
+                    <textarea id="description" type="text" placeholder="請輸入說明內容" class="form-control"
+                      v-model="cloneDate.content"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input id="is_enabled" type="checkbox" class="form-check-input" v-model="cloneDate.is_enabled"
+                        :true-value="1" :false-value="0" />
+                      <label for="is_enabled" class="form-check-label">是否啟用[is_enabled]</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
+                取消
+              </button>
+              <button type="button" class="btn btn-primary" @click="updData">
+                確認
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>  -->
+
+      <edit-Product :pid="cloneDate.id" > </edit_Product>
+
+      <!-- 03 刪除品確認 -->
+      <div id="deletePanel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        class="modal fade">
+        <div role="document" class="modal-dialog">
+          <div class="modal-content border-0">
+            <div class="modal-header bg-danger text-white">
+              <h5 id="exampleModalLabel" class="modal-title">
+                <span>刪除產品</span>
+              </h5>
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              是否刪除
+              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
+                取消
+              </button>
+              <button type="button" class="btn btn-danger" @click="delPrduct">
+                確認刪除
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 04 分頁 -->
+    <do-Navigater :pages="pages" @gotopage="getData"></do-Navigater>
+  </div> 
+
+  <!-- 外部引用 -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>    
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <!-- MY -->
+  <script src="./js/editproduct.js"></script>
+  <script src="./js/pagination.js"></script>
+  <script src="./js/all.js"></script>
+  
+
+</body>
+
+
+</script>
+
+</html>
