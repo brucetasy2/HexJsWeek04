@@ -2,7 +2,7 @@
 
 Vue.component('doNavigater', {
   template: `
-  <div class="card-header d-flex justify-content-center">
+  <div class="d-flex justify-content-center">
     <ul class="pagination">
       <li class="page-item">
         <a class="page-link" href="#" @click.prvent="navipage(pages.current_page-1)">Previous</a>

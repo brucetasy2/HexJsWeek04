@@ -4,10 +4,9 @@ var app = new Vue({
     data: {
         uuid: 'd952d084-2b40-40c3-9758-1aef7c7aa9e6',
         apipath: 'https://course-ec-api.hexschool.io/api/',
-        token: '',
+        token: '',      // created 時取出存在的token
         products: [],
-        pages: [], // 頁數資訊
-        pid: '',
+        pages: [],      // 頁數資訊
         tranpacka: {
             // 封裝參數傳入 editprduct
         },
@@ -20,43 +19,16 @@ var app = new Vue({
             // 帶入 token
             axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
             axios.get(api).then((response) => {
-                this.products = response.data.data;       // 取得產品資料
+                this.products = response.data.data;         // 取得產品資料
                 this.pages = response.data.meta.pagination; // 取得頁數資料
             });
         },
-
-        // 更新產品
-        // updData() {
-        //     if (this.editproductName == '新增產品') {
-        //         this.products.unshift(this.cloneDate);
-        //     } else {
-        //         let curId = this.cloneDate.id;
-        //         this.products.forEach((arry, inx) => {
-        //             if (arry.id == curId) {
-        //                 this.products[inx] = this.cloneDate;
-        //             }
-        //         });
-        //     }
-        //     this.cloneDate = {};
-        //     $('#editproduct').modal('hide');
-        // },
-
-        // 刪除產品
-        // delPrduct() {
-        //     let delId = this.cloneDate.id;
-        //     this.products.forEach((product, inx) => {
-        //         if (product.id == delId) {
-        //             this.products.splice(inx, 1);
-        //         }
-        //     })
-        //     $('#deletePanel').modal('hide');
-        // },
 
         /**
         * 開啟 開啟工作(視窗)
         * @param editType 判斷目前是否為新增(true)或是編輯(false)
         */
-        DoEditProduct(editType) {
+        DoEditProduct(editType,product) {
             console.log(`******** all.js(DoEditProduct) 開啟工作面板 editType= ${editType} ******`);
             this.tranpacka.edittype = editType;
             this.tranpacka.uuid = this.uuid;
@@ -75,6 +47,7 @@ var app = new Vue({
                     break;
                 case 'delete': //刪除模式
                     this.tranpacka.pid = product.id;
+                    this.tranpacka.ptitle =product.title ;
                     this.$refs.dropproduct.dorefresh();
                     break;
                 default:

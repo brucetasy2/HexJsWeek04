@@ -15,8 +15,8 @@ Vue.component('dropproduct', {
                 </button>
             </div>
 
-            <div class="modal-body">是否刪除
-                <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+            <div class="modal-body">是否刪除 
+                <strong class="text-danger" > {{ ptitle }}</strong> 商品(刪除後將無法恢復)。
             </div>
 
             <div class="modal-footer">
@@ -33,10 +33,10 @@ Vue.component('dropproduct', {
 `,
     data() {
         return {
-            indata: {
-                imageUrl: [],
-            },
-
+            // indata: {
+            //     imageUrl: [],
+            // },
+            ptitle:'',
         };
     },
     props: {
@@ -49,6 +49,7 @@ Vue.component('dropproduct', {
         dorefresh() {
             console.log(`******** dropproduct.js(dorefresh) ******`);
             $('#dropproduct').modal('show');
+            this.ptitle=this.tranpacka.ptitle;
         },
         delprduct() {  
             let httpMethod = 'delete';
