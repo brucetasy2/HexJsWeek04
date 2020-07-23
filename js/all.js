@@ -2,15 +2,15 @@
 var app = new Vue({
     el: '#app',
     data: {
-        uuid : 'd952d084-2b40-40c3-9758-1aef7c7aa9e6',
-        apiPath : 'https://course-ec-api.hexschool.io/api/',
-        token:'',
+        uuid: 'd952d084-2b40-40c3-9758-1aef7c7aa9e6',
+        apipath: 'https://course-ec-api.hexschool.io/api/',
+        token: '',
         products: [],
-        pages:[], // 頁數資訊
-        editpid: '',
-        // cloneDate: {
-        //     imageUrl: [],
-        // },
+        pages: [], // 頁數資訊
+        pid: '',
+        tranpacka: {
+            // 封裝參數傳入 editprduct
+        },
     },
 
     methods: {
@@ -21,61 +21,61 @@ var app = new Vue({
             axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
             axios.get(api).then((response) => {
                 this.products = response.data.data;       // 取得產品資料
-                this.pages=response.data.meta.pagination; // 取得頁數資料
+                this.pages = response.data.meta.pagination; // 取得頁數資料
             });
         },
 
         // 更新產品
-        updData() {
-            if (this.editproductName == '新增產品') {
-                this.products.unshift(this.cloneDate);
-            } else {
-                let curId = this.cloneDate.id;
-                this.products.forEach((arry, inx) => {
-                    if (arry.id == curId) {
-                        this.products[inx] = this.cloneDate;
-                    }
-                });
-            }
-            this.cloneDate = {};
-            $('#editproduct').modal('hide');
-        },
+        // updData() {
+        //     if (this.editproductName == '新增產品') {
+        //         this.products.unshift(this.cloneDate);
+        //     } else {
+        //         let curId = this.cloneDate.id;
+        //         this.products.forEach((arry, inx) => {
+        //             if (arry.id == curId) {
+        //                 this.products[inx] = this.cloneDate;
+        //             }
+        //         });
+        //     }
+        //     this.cloneDate = {};
+        //     $('#editproduct').modal('hide');
+        // },
 
         // 刪除產品
-        delPrduct() {
-            let delId = this.cloneDate.id;
-            this.products.forEach((product, inx) => {
-                if (product.id == delId) {
-                    this.products.splice(inx, 1);
-                }
-            })
-            $('#deletePanel').modal('hide');
-        },
+        // delPrduct() {
+        //     let delId = this.cloneDate.id;
+        //     this.products.forEach((product, inx) => {
+        //         if (product.id == delId) {
+        //             this.products.splice(inx, 1);
+        //         }
+        //     })
+        //     $('#deletePanel').modal('hide');
+        // },
 
-        // 開啟工作面板
-        DoEditProduct(editType, product) {
-            console.log(`******** all.js(editproduct) 開啟工作面板 editType= ${editType} ******`);
+        /**
+        * 開啟 開啟工作(視窗)
+        * @param editType 判斷目前是否為新增(true)或是編輯(false)
+        */
+        DoEditProduct(editType) {
+            console.log(`******** all.js(DoEditProduct) 開啟工作面板 editType= ${editType} ******`);
+            this.tranpacka.edittype = editType;
+            this.tranpacka.uuid = this.uuid;
+            this.tranpacka.apipath = this.apipath;
+            this.tranpacka.token = this.token;
+            this.tranpacka.pages = this.pages;
 
             switch (editType) {
                 case 'new': // 新增模式
-                    $('#eeditproduct').modal('show');
-                    this.editproductName = '新增產品';
-                    this.cloneDate = {
-                        imageUrl: [],
-                    };
-                    this.cloneDate.id = new Date().getTime();
-                    break;
-                    
-                case 'edit': //修改模式
-                    // $('#editproduct').modal('show');
-                    this.editpid = product.id;
-                    console.log(`******** all.js(editproduct) 開啟工作面板 editpid= ${ this.editpid } ******`);
+                    this.tranpacka.pid = '';
                     this.$refs.editproduct.dorefresh();
                     break;
-
+                case 'edit': //修改模式
+                    this.tranpacka.pid = product.id;
+                    this.$refs.editproduct.dorefresh();
+                    break;
                 case 'delete': //刪除模式
-                    $('#deletePanel').modal('show');
-                    this.cloneDate = JSON.parse(JSON.stringify(product));
+                    this.tranpacka.pid = product.id;
+                    this.$refs.dropproduct.dorefresh();
                     break;
                 default:
                     break;
@@ -88,7 +88,7 @@ var app = new Vue({
         this.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         // 若無法取得 token 則返回 Login 頁面
         if (this.token === '') {
-            window.location = 'index.html'; 
+            window.location = 'index.html';
         }
     },
 

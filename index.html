@@ -106,7 +106,7 @@
     <script>
       //   參數定義
       const uuid = 'd952d084-2b40-40c3-9758-1aef7c7aa9e6';
-      const apiPath = 'https://course-ec-api.hexschool.io/api/';
+      const apipath = 'https://course-ec-api.hexschool.io/api/';
 
       new Vue({
         el: '#app',
@@ -119,7 +119,7 @@
         methods: {
           login() {
             // 進行驗證
-            const api = `${apiPath}auth/login`;
+            const api = `${apipath}auth/login`;
             axios
               .post(api, this.user)
               .then((response) => {
